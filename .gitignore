@@ -28,3 +28,8 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+.env
+
+# Token Vue 3 Mapbox GL
+src/map/token.js

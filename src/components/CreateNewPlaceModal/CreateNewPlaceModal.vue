@@ -11,6 +11,13 @@ const props = defineProps({
 		default: false,
 		type: Boolean,
 	},
+
+	isLoading: {
+		default: false,
+		type: Boolean,
+	},
+
+	hasError: {},
 });
 
 const emit = defineEmits(['close', 'submit']);
@@ -18,21 +25,25 @@ const emit = defineEmits(['close', 'submit']);
 const formData = reactive({
 	title: '',
 	description: '',
-	imageUrl: '',
+	img: '',
 });
 
 const handleUpload = url => {
-	formData.imageUrl = url;
+	formData.img = url;
 };
 
 const uploadText = computed(() => {
-	return !formData.imageUrl ? 'Натисніть тут, щоб додати фото' : 'Натисніть тут, щоб змінити фото';
+	return !formData.img ? 'Натисніть тут, щоб додати фото' : 'Натисніть тут, щоб змінити фото';
 });
+
+const resetForm = () => {
+	(formData.title = ''), (formData.description = ''), (formData.img = '');
+};
 </script>
 
 <template>
 	<IModal v-if="props.modalIsOpen" @close="emit('close')">
-		<form @submit.prevent="emit('submit', formData)" class="min-w-[419px]">
+		<form @submit.prevent="emit('submit', formData, resetForm)" class="min-w-[419px]">
 			<div class="flex gap-2 items-center justify-center mb-[42px]">
 				<MarkerIcon />
 				<p class="font-bold text-center">Додати маркер</p>
@@ -51,13 +62,17 @@ const uploadText = computed(() => {
 				class="mb-4"
 			/>
 			<img
-				v-if="formData.imageUrl"
-				:src="formData.imageUrl"
+				v-if="formData.img"
+				:src="formData.img"
 				alt="image"
 				class="w-20 h-20 object-cover mb-4"
 			/>
-			<InputImage @uploaded="handleUpload"> {{ uploadText }}</InputImage>
-			<IButton variant="gradient" class="w-full mt-[42px]">Додати</IButton>
+			<InputImage @uploaded="handleUpload">{{ uploadText }}</InputImage>
+
+			<IButton variant="gradient" class="w-full mt-[42px]" :is-loading="props.isLoading"
+				>Додати</IButton
+			>
+			<p v-if="props.hasError" class="text-red-500" type="submit">Щось пішло не так</p>
 		</form>
 	</IModal>
 </template>

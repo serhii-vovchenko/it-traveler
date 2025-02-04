@@ -19,7 +19,7 @@ const handleUploadImage = e => {
 	<label class="cursor-pointer hover:text-primary">
 		<input type="file" accept="image/*" class="hidden" @change="handleUploadImage" />
 		<span class="flex gap-1 items-center underline text-xs">
-			<UploadIcon />
+			<UploadIcon class="fill-primary" />
 			<slot></slot>
 		</span>
 	</label>

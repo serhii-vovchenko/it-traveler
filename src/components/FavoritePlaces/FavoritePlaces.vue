@@ -72,8 +72,8 @@ const handleOpenConfirmationModal = id => {
 	openConfirmationModal();
 };
 
-const handleDeletePlace = () => {
-	deletePlace(idOfDeletePlace.value);
+const handleDeletePlace = async () => {
+	await deletePlace(idOfDeletePlace.value);
 	emit('del-item');
 };
 </script>
